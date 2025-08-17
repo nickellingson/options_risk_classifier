@@ -1,0 +1,7 @@
+venv/
+notes.txt
+test.py
+data/
+stage/
+.DS_Store
+*.csv
