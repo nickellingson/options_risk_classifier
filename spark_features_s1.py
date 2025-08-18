@@ -7,10 +7,12 @@ from pyspark.sql.types import StringType
 from pyspark.sql import functions as F
 
 # ---- config ----
-DATA_DIR    = os.path.abspath(os.getenv("DAY_AGGS_DIR", "data/day_aggs"))   # where your .csv.gz files are
-UNDERLYING  = os.getenv("UNDERLYING", "SPY")               # for moneyness & sigma
+DATA_DIR    = os.path.abspath(os.getenv("DAY_AGGS_DIR", "data/day_aggs")) # where your .csv.gz files are
+UNDERLYING  = os.getenv("UNDERLYING", "SPY") # for moneyness & sigma
 RISK_FREE   = float(os.getenv("RISK_FREE", "0.04"))
 POLY_KEY    = os.getenv("POLYGON_API_KEY")
+IN_PARQUET  = "stage/day_aggs_step2_occ.parquet"
+OUT_PARQUET = f"stage/features_{UNDERLYING.lower()}.parquet"
 
 print(DATA_DIR)
 spark = SparkSession.builder.appName("OptionsFeaturesV1").getOrCreate()
@@ -105,3 +107,14 @@ df_occ.select(
 # Stage output
 df_occ.write.mode("overwrite").parquet("stage/day_aggs_step2_occ.parquet")
 print("[done] wrote stage/day_aggs_step2_occ.parquet")
+
+df_step2 = spark.read.parquet("stage/day_aggs_step2_occ.parquet")
+df_step2.printSchema()
+print("Row count:", df_step2.count())
+df_step2.select(
+    "trade_date", "contract_symbol", "underlying_root",
+    "expiration_date", "option_is_call", "strike_price", 
+    "volume", "option_close"
+).orderBy("trade_date", "expiration_date", "strike_price").show(20, truncate=False)
+df_step2.groupBy("expiration_date").count().orderBy("expiration_date").show(10)
+df_step2.groupBy("underlying_root").count().orderBy("underlying_root").show(10)
