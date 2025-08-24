@@ -5,3 +5,4 @@ data/
 stage/
 .DS_Store
 *.csv
+dest/

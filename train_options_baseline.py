@@ -112,3 +112,6 @@ pathlib.Path("models").mkdir(exist_ok=True)
 joblib.dump(scaler, "models/scaler_spy_itm.joblib")
 torch.save(model.state_dict(), "models/mlp_spy_itm.pt")
 print("[done] saved to models/")
+
+
+# Inference stuff???
