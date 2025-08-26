@@ -5,7 +5,13 @@ import gzip
 spark = SparkSession.builder.appName("MoreCleaning").getOrCreate()
 
 def clear_dir():
-    pass
+    for dirpath, _, filenames in os.walk("./cleaning_spinoff/dest"):
+        print(dirpath, filenames)
+        for file in filenames:
+            file_path = os.path.join(dirpath, file)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+    print("Directory cleared")
 
 def unzip_gz():
 
@@ -26,6 +32,7 @@ def unzip_gz():
                 print("No file found")
             except Exception as e:
                 print("Error occurred", e)
+    print("New files unzipped and sent")
 
 def spark_count():
     files = "./cleaning_spinoff/dest"
@@ -37,8 +44,6 @@ def spark_count():
 
 
 if __name__=="__main__":
+    clear_dir()
     unzip_gz()
     spark_count()
-
-
-# add airflow...

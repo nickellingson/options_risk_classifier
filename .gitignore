@@ -6,3 +6,4 @@ stage/
 .DS_Store
 *.csv
 dest/
+airflow_home/
