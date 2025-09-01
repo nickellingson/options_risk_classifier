@@ -43,7 +43,7 @@ def spark_count():
     print("Count:", df_raw.count())
 
 
-if __name__=="__main__":
-    clear_dir()
-    unzip_gz()
-    spark_count()
+# if __name__=="__main__":
+    # clear_dir()
+    # unzip_gz()
+    # spark_count()

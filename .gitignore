@@ -6,4 +6,13 @@ stage/
 .DS_Store
 *.csv
 dest/
-airflow_home/
+**/airflow.db
+**/airflow.cfg
+**/webserver_config.py
+**/logs/
+**/unittests.cfg
+**/*.pid
+**/__pycache__/
+**/*.pyc
+__pycache__/
+standalone_admin_password.txt
